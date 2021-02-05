@@ -24,7 +24,9 @@ Class Theme
 	protected $taxonomies = [];
 	protected $blocks = [];
 	protected $colors = [];
+	protected $font_sizes = [];
 	protected $block_categories = [];
+	protected $block_styles = [];
 
 
 
@@ -41,6 +43,7 @@ Class Theme
 		$this->setupPostTypes();
 		$this->setupTaxonomies();
 		$this->setupBlockCategories();
+		$this->setupBlockStyles();
 		$this->setupBlocks();
 	}
 
@@ -78,6 +81,10 @@ Class Theme
 
 			if ($this->colors) {
 				add_theme_support('editor-color-palette', $this->colors);
+			}
+
+			if ($this->font_sizes) {
+				add_theme_support('editor-font-sizes', $this->font_sizes);
 			}
 
 			Images::registerSizes($this->image_sizes);
@@ -171,6 +178,34 @@ Class Theme
 	{
 		add_filter('block_categories', function($categories) {
 			return array_merge($categories,  $this->block_categories);
+		});
+	}
+
+
+	private function setupBlockStyles()
+	{
+
+		add_action('admin_head', function() {
+			$tmpl = "wp.blocks.registerBlockStyle('%s', {
+				name: '%s',
+				label: '%s',
+				isDefault: %s,
+			});";
+
+
+			echo '<script>';
+			echo "document.addEventListener('DOMContentLoaded', function() {";
+
+			foreach ($this->block_styles as $block => $styles) {
+				foreach ($styles as $name => $style) {
+					$default = array_get($style, 'default', false);
+					$default = json_encode($default);
+					printf($tmpl, $block, $name, $style['label'], $default);
+				}
+			}
+
+			echo "});";
+			echo '</script>';
 		});
 	}
 
