@@ -44,14 +44,14 @@ Class PostType
 		add_action('manage_' . $this->name . '_posts_custom_column', [$this, 'adminColumnVals'], 10, 2);
 		add_action('pre_get_posts', [$this, 'adminColumnSort']);
 
-		add_action('pre_get_posts', [$this, 'pageSize'], 1, 999);
+		add_action('pre_get_posts', [$this, 'pageSize'], 999, 1);
 		add_action('add_meta_boxes', [$this, 'displayMetaboxes']);
 		add_action('save_post', [$this, 'processMetaboxes'], 10, 2);
 
 		add_filter('excerpt_length', [$this, 'excerptLength']);
-		add_filter('get_the_excerpt', [$this, 'getTheExcerpt']);
+		add_filter('get_the_excerpt', [$this, 'getTheExcerpt'], 10, 2);
 		add_filter('excerpt_more', [$this, 'excerptMore']);
-		add_filter('the_content', [$this, 'tidyContent'], 1, 9999); // Run After wpautop
+		add_filter('the_content', [$this, 'tidyContent'], 9999, 1); // Run After wpautop
 	}
 
 
@@ -161,11 +161,10 @@ Class PostType
 		if (is_admin() || ! $query->is_main_query()) {
 			return;
 		}
-
 		if ($query->get('post_type') !== $this->name) {
 			return;
 		}
-		if ( ! $query->is_post_type_archive) {
+		if (!$query->is_post_type_archive) {
 			return;
 		}
 
@@ -184,8 +183,10 @@ Class PostType
 	}
 
 
-	public function getTheExcerpt($excerpt)
+	public function getTheExcerpt($excerpt, $post)
 	{
+		if ($post->post_type !== $this->name) return $excerpt;
+
 		$excerpt = strip_tags($excerpt);
 		$excerpt = wp_trim_words($excerpt, $this->excerpt_length, $this->excerpt_more);
 
