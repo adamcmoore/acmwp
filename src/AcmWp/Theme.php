@@ -7,10 +7,9 @@ use AcmWp\Theme\Templates;
 use AcmWp\Theme\Customizer;
 
 
-Class Theme
+Class Theme extends Plugin
 {
 	protected $file;
-
 	protected $version = '1.0';
 	protected $theme_support = [];
 	protected $post_formats = [];
@@ -20,13 +19,8 @@ Class Theme
 	protected $stylesheets = [];
 	protected $customizer = [];
 	protected $widget_areas = [];
-	protected $post_types = [];
-	protected $taxonomies = [];
-	protected $blocks = [];
 	protected $colors = [];
 	protected $font_sizes = [];
-	protected $block_categories = [];
-	protected $block_styles = [];
 
 
 
@@ -45,12 +39,6 @@ Class Theme
 		$this->setupBlockCategories();
 		$this->setupBlockStyles();
 		$this->setupBlocks();
-	}
-
-
-	private function setupGlobals()
-	{
-		$this->file = __FILE__;
 	}
 
 
@@ -149,65 +137,6 @@ Class Theme
 		});
 	}
 
-
-	private function setupPostTypes()
-	{
-		foreach ($this->post_types as $post_type) {
-			$post_type->register();
-		}
-	}
-
-
-	private function setupTaxonomies()
-	{
-		foreach ($this->taxonomies as $taxonomy) {
-			$taxonomy->register();
-		}
-	}
-
-
-	private function setupBlocks()
-	{
-		foreach ($this->blocks as $block) {
-			$block->register();
-		}
-	}
-
-
-	private function setupBlockCategories()
-	{
-		add_filter('block_categories', function($categories) {
-			return array_merge($categories,  $this->block_categories);
-		});
-	}
-
-
-	private function setupBlockStyles()
-	{
-
-		add_action('admin_head', function() {
-			$tmpl = "wp.blocks.registerBlockStyle('%s', {
-				name: '%s',
-				label: '%s',
-				isDefault: %s,
-			});";
-
-
-			echo '<script>';
-			echo "document.addEventListener('DOMContentLoaded', function() {";
-
-			foreach ($this->block_styles as $block => $styles) {
-				foreach ($styles as $name => $style) {
-					$default = array_get($style, 'default', false);
-					$default = json_encode($default);
-					printf($tmpl, $block, $name, $style['label'], $default);
-				}
-			}
-
-			echo "});";
-			echo '</script>';
-		});
-	}
 
 
 	protected function hideAdminBarForNonAdmins()

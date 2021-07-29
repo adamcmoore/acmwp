@@ -16,7 +16,7 @@
 		"php": ">=7.4.0",
 		"doctrine/inflector": "^1.4.1",
 		"nesbot/carbon": "^2.43.0",
-		"rappasoft/laravel-helpers": "^1.0.2",
+		"laravel/helpers": "^1.2",
 		"jakeasmith/http_build_url": "^1.0.1"
 	},
 	"autoload": {

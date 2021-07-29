@@ -19,7 +19,6 @@ Class Block
 		if (!function_exists('acf_register_block_type')) return;
 		if (!function_exists('acf_add_local_field_group')) return;
 
-
 		add_action('acf/init', function() {
 			$args = [
 				'name'              => $this->name,

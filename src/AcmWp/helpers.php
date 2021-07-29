@@ -25,22 +25,18 @@ if (!function_exists('truncate')) {
 }
 
 
-
-if (!function_exists('post_get')) {
-	function post_get($key, $default = null) {
-		return array_get($_POST, $key, $default);
+if (!function_exists('dump')) {
+	function dump($var)
+	{
+		var_dump($var);
 	}
 }
 
 
-if (!function_exists('query_get')) {
-	function query_get($key, $default = null) {
-		return array_get($_GET, $key, $default);
-	}
-}
-
-if (!function_exists('session_get')) {
-	function session_get($key, $default = null) {
-		return array_get($_SESSION, $key, $default);
+if (!function_exists('dd')) {
+	function dd($var)
+	{
+		dump($var);
+		die();
 	}
 }
