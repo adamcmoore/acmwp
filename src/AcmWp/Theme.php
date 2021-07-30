@@ -7,10 +7,8 @@ use AcmWp\Theme\Templates;
 use AcmWp\Theme\Customizer;
 
 
-Class Theme extends Plugin
+Class Theme extends App
 {
-	protected $file;
-	protected $version = '1.0';
 	protected $theme_support = [];
 	protected $post_formats = [];
 	protected $image_sizes = [];
@@ -26,19 +24,10 @@ Class Theme extends Plugin
 
 	public function __construct()
 	{
-		if (WP_DEBUG) {
-			$this->version .= '.'.rand(0, 100000);
-		}
+		parent::__construct();
 
-
-		$this->setupGlobals();
 		$this->setupTheme();
 		$this->setupScripts();
-		$this->setupPostTypes();
-		$this->setupTaxonomies();
-		$this->setupBlockCategories();
-		$this->setupBlockStyles();
-		$this->setupBlocks();
 	}
 
 

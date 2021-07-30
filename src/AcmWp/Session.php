@@ -1,5 +1,5 @@
 <?php
-namespace AcWp;
+namespace AcmWp;
 
 class Session
 {
