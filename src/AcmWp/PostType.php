@@ -69,7 +69,7 @@ Class PostType
 
 		$singular       = str_replace('_', ' ', $this->name);
 		$plural         = Inflector::pluralize($singular);
-		$frontend_title = $frontend_title = get_option($this->name . '_label');
+		$frontend_title = get_option($this->name . '_label');
 
 		if ($frontend_title && array_key_exists('frontend_title', $this->args['labels'])) {
 			$this->args['labels']['frontend_title'] = $frontend_title;
