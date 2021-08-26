@@ -25,6 +25,7 @@ class App
 		$this->setupTaxonomies();
 		$this->setupBlockCategories();
 		$this->setupBlocks();
+		$this->setupBlockStyles();
 		$this->setupUsers();
 	}
 
