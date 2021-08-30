@@ -103,7 +103,7 @@ Class Theme extends App
 					false
 				);
 
-				wp_localize_script($key, 'ajax_url', admin_url('admin-ajax.php'));
+				wp_localize_script($key, 'acm', ['ajax_url' => admin_url('admin-ajax.php')]);
 				wp_enqueue_script($key);
 			}
 
