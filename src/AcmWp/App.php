@@ -70,7 +70,7 @@ class App
 
 	protected function setupBlockCategories()
 	{
-		add_filter('block_categories', function($categories) {
+		add_filter('block_categories_all', function($categories) {
 			return array_merge($categories,  $this->block_categories);
 		});
 	}

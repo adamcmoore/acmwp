@@ -48,8 +48,12 @@ Class Theme extends App
 		add_action('after_setup_theme', function () {
 			add_theme_support('editor-styles');
 
-			foreach ($this->theme_support as $theme_support) {
-				add_theme_support($theme_support);
+			foreach ($this->theme_support as $theme_support => $options) {
+				if (is_array($options)) {
+					add_theme_support($theme_support, $options);
+				} else {
+					add_theme_support($options);
+				}
 			}
 
 			if ($this->post_formats) {
@@ -108,20 +112,20 @@ Class Theme extends App
 			}
 
 			foreach ($this->stylesheets as $key => $path) {
-				wp_enqueue_style($key,
-					get_stylesheet_directory_uri() . $path,
-					[],
-					$this->version
-				);
+				if (str_starts_with($path, '/')) {
+					$path = get_stylesheet_directory_uri().$path;
+				}
+				wp_enqueue_style($key, $path, [], $this->version);
 			}
 		});
 
 
 		add_action('admin_init', function() {
 			foreach ($this->stylesheets as $key => $path) {
-				add_editor_style(
-					get_stylesheet_directory_uri() . $path.'?v='.$this->version
-				);
+				if (str_starts_with($path, '/')) {
+					$path = get_stylesheet_directory_uri().$path;
+				}
+				add_editor_style($path.'?v='.$this->version);
 			}
 		});
 	}

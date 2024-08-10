@@ -29,14 +29,18 @@ Class Taxonomy
 
 	public function register()
 	{
-		add_action('after_setup_theme', [$this, 'registerTaxonomy'], 10); // After Posts
+		if ($this->isBuiltIn()) {
+			add_action('registered_taxonomy_'.$this->name, [$this, 'registerTaxonomy']);
+		} else {
+			add_action('after_setup_theme', [$this, 'registerTaxonomy'], 10); // After Posts
+		}
 		add_action('init', [$this, 'registerFields'], 10);
 	}
 
 
 	public function isBuiltIn()
 	{
-		return in_array($this->name, ['category', 'tag']);
+		return in_array($this->name, ['category', 'post_tag']);
 	}
 
 
@@ -73,7 +77,7 @@ Class Taxonomy
 					'menu_name'          => ucwords($plural)
 				]
 			];
-
+			
 			register_taxonomy($this->name, $this->post_types, array_merge($defaults, $this->args));
 		}
 	}

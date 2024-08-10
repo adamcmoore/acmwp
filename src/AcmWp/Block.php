@@ -39,6 +39,11 @@ Class Block
 
 			$fields = Fields::prefixFieldsKey($this->fields, 'acm_block_'.$this->name);
 
+			if (strpos($this->name, 'core/') === 0) {
+				$name = $this->name;
+			} else {
+				$name = 'acf/'.$this->name;
+			}
 			acf_add_local_field_group([
 				'key'      => 'block_'.$this->name,
 				'title'    => $this->title,
@@ -46,7 +51,7 @@ Class Block
 				'location' => [[[
 					'param'    => 'block',
 					'operator' => '==',
-					'value'    => 'acf/'.$this->name,
+					'value'    => $name,
 				]]],
 			]);
 		});
